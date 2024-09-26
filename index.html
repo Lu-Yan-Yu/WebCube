@@ -17,7 +17,7 @@
         <option value="decreaseSize">方案四</option>
     </select>
     <a-scene embedded>
-        <a-box id="colorBox" position="0 1 -3" rotation="0 45 0" scale="1 1 1" color="blue"></a-box>
+        <a-box id="colorBox" position="0 1 -3" rotation="0 45 0" scale="0.4 0.4 0.4" color="blue"></a-box>
         <a-camera></a-camera>
     </a-scene>
     <script>
@@ -30,24 +30,22 @@
 
             switch (selectedValue) {
                 case 'changeColorRed':
-                    colorBox.setAttribute('color', 'rgb(255, 0, 0)'); // 设置为红色
+                    colorBox.setAttribute('color', 'rgb(0, 0, 255)'); // 设置为藍色
                     break;
                 case 'changeColorBlue':
-                    colorBox.setAttribute('color', 'rgb(0, 0, 255)'); // 设置为蓝色
+                    colorBox.setAttribute('color', 'rgb(255, 0, 0)'); // 设置为紅色
                     break;
                 case 'increaseSize':
                     let currentScale = colorBox.getAttribute('scale');
-                    colorBox.getAttribute('scale');
-                    currentScale.x=parseFloat+ 0.5;
-                    currentScale.y=parseFloat+ 0.5;
-                    currentScale.z=parseFloat+ 0.5;// 增大方块
+                    currentScale.x=originalScale.x+ 0.5;
+                    currentScale.y=originalScale.y+ 0.5;
+                    currentScale.z=originalScale.z+ 0.5;// 增大方块
                     break;
                 case 'decreaseSize':
                     currentScale = colorBox.getAttribute('scale');
-                    colorBox.getAttribute('scale');
-                    currentScale.x=Math.max(0.5,parseFloat(currentScale.x)- 0.5);
-                    currentScale.7=Math.max(0.5,parseFloat(currentScale.x)- 0.5);
-                    currentScale.z=Math.max(0.5,parseFloat(currentScale.x)- 0.5);// 增大方块
+                    currentScale.x=originalScale.x- 0.2;
+                    currentScale.y=originalScale.y- 0.2;
+                    currentScale.z=originalScale.z- 0.2;// 縮小方块
                     break;
                 default:
                     break; // 其他情况不处理
