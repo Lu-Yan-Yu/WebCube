@@ -9,10 +9,28 @@
 </head>
 
 <body style='margin: 0; overflow: hidden;'>
+    <button id ="Change" style="position: absolute; z-index: 10; top: 10px; left: 10px;">Ghange</button>
     <a-scene embedded>
         <a-box position="0 1 -3" rotation="0 45 0" scale="1 1 1" color="blue"></a-box>
         <a-camera></a-camera>
-      </a-scene>
+    </a-scene>
+    <script>
+        // 取得方块元素和按钮
+        const colorBox = document.getElementById('colorBox');
+        const ChangeButton = document.getElementById('Change');
+
+        // 设定初始颜色
+        let isBlue = true;
+
+        // 添加按钮的点击事件
+        colorButton.addEventListener('click', function() {
+            if (isBlue) {
+                colorBox.setAttribute('color', 'red'); // 切换为红色
+            } else {
+                colorBox.setAttribute('color', 'blue'); // 切换为蓝色
+            }
+            isBlue = !isBlue; // 切换颜色状态
+    </script>
 </body>
 </html>
 
