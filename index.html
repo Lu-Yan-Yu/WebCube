@@ -17,7 +17,7 @@
         <option value="option4">方案四</option>
     </select>
     <a-scene embedded>
-        <a-entity id="shapeEntity" geometry="primitive: box; height: 1; width: 1; depth: 1" material="color: rgb(0, 0, 255)" position="0 1 -3" rotation="0 45 0"></a-entity>
+        <a-entity id="shapeEntity" geometry="primitive: box; height: 0.6; width: 0.6; depth: 0.6" material="color: rgb(0, 0, 255)" position="0 1 -3" rotation="0 45 0"></a-entity>
         <a-camera></a-camera>
     </a-scene>
     <script>
@@ -31,26 +31,26 @@
 
             switch (selectedValue) {
                 case 'option1':
-                    shapeEntity.setAttribute('geometry', 'primitive: box; height: 1; width: 1; depth: 1'); // 方块
+                    shapeEntity.setAttribute('geometry', 'primitive: box; height: 0.6; width: 0.6; depth: 0.6'); // 方块
                     shapeEntity.setAttribute('material', 'color: rgb(0, 0, 255)'); // 蓝色
                     break;
                 case 'option2':
-                    shapeEntity.setAttribute('geometry', 'primitive: box; height: 1; width: 1; depth: 1'); // 方块
+                    shapeEntity.setAttribute('geometry', 'primitive: box; height: 0.6; width: 0.6; depth: 0.6'); // 方块
                     shapeEntity.setAttribute('material', 'color: rgb(255, 0, 0)'); // 紅色
                     break;
                 case 'option3':
-                    shapeEntity.setAttribute('geometry', 'primitive: sphere; radius: 1'); // 球体
+                    shapeEntity.setAttribute('geometry', 'primitive: sphere; radius: 0.3'); // 球体
                     shapeEntity.setAttribute('material', 'color: rgb(0, 0, 255)'); // 红色
                     break;
                 case 'option4':
-                    shapeEntity.setAttribute('geometry', 'primitive: sphere; radius: 1'); // 球体
+                    shapeEntity.setAttribute('geometry', 'primitive: sphere; radius: 0.3'); // 球体
                     shapeEntity.setAttribute('material', 'color: rgb(255, 0, 0)'); // 红色
                     break;
                 default:
                     break; // 其他情况不处理
             }
 
-            options.selectedIndex = 0; // 重置选择
+            //options.selectedIndex = 0; // 重置选择
         });
     </script>
 </body>
