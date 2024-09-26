@@ -39,15 +39,14 @@
                     break;
                 case 'increaseSize':
                     let currentScale = colorBox.getAttribute('scale');
-                    colorBox.setAttribute('scale', `${parseFloat(originalScale.x) + 0.2} ${parseFloat(originalScale.y) + 0.2} ${parseFloat(originalScale.z) + 0.2}`); // 增大方块
+                    colorBox.setAttribute('scale', 0.6 0.6 0.6} ${parseFloat(originalScale.z) + 0.2}`); // 增大方块
                     break;
                 case 'decreaseSize':
                     let currentScale = colorBox.getAttribute('scale');
                      const newScale = {
-                        x: Math.max(0.1, parseFloat(originalScale.x) - 0.2), // 确保不会小于0.1
-                        y: Math.max(0.1, parseFloat(originalScale.y) - 0.2),
-                        z: Math.max(0.1, parseFloat(originalScale.z) - 0.2)
-                    };
+                        x: 0.2,
+                        y: 0.2,
+                        z: 0.2 };
                     colorBox.setAttribute('scale', `${newScale.x} ${newScale.y} ${newScale.z}`); // 缩小方块
                 default:
                     break; // 其他情况不处理
