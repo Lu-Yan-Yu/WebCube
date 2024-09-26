@@ -17,8 +17,13 @@
         <option value="option4">方案四</option>
     </select>
     <a-scene embedded>
-        <a-entity id="shapeEntity" geometry="primitive: box; height: 0.6; width: 0.6; depth: 0.6" material="color: rgb(0, 0, 255)" position="0 1 -3" rotation="0 45 0"></a-entity>
-        <a-camera></a-camera>
+        <a-entity id="shapeEntity" 
+            gps-entity-place="latitude:22.9985186; longitude:120.2201315"  <!-- 更改为目标的实际经纬度 -->
+            geometry="primitive: box; height: 0.6; width: 0.6; depth: 0.6"
+            material="color: rgb(0, 0, 255)" 
+            rotation="0 45 0">
+        </a-entity>
+        <a-camera gps-camera rotation-reader></a-camera>
     </a-scene>
     <script>
         // 取得方块元素和選單
