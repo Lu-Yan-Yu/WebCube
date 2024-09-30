@@ -28,7 +28,7 @@
     <a-scene embedded>
         <!-- 实体 -->
         <a-entity id="shapeEntity" geometry="primitive: box; height: 0.5; width: 0.5; depth: 0.5" 
-                  material="color: rgb(0, 130, 180)" position="0 1 -3" rotation="0 45 0"></a-entity>
+                  material="color: rgb(70, 130, 180)" position="0 1 -3" rotation="0 45 0"></a-entity>
         <a-camera></a-camera>
     </a-scene>
 
@@ -64,7 +64,7 @@
         });
 
         // 点击实体时显示颜色和大小信息
-        shapeEntity.addEventListener('mouseenter', function () {
+        shapeEntity.addEventListener('click', function () {
             const material = shapeEntity.getAttribute('material'); // 获取当前颜色
             const geometry = shapeEntity.getAttribute('geometry'); // 获取几何形状属性
             let colorInfo = `颜色: ${material.color}`; // 获取当前颜色
@@ -78,7 +78,7 @@
                 sizeInfo = `大小: 半径 ${geometry.radius}`;
             }
 
-            alert(` ${colorinfo}\n${sizeInfo}`); // 显示颜色和大小信息
+            alert(` ${colorInfo}\n${sizeInfo}`); // 显示颜色和大小信息
         });
 
     </script>
