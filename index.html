@@ -65,7 +65,7 @@
 
         // 点击实体时显示颜色和大小信息
         shapeEntity.addEventListener('click', function () {
-            const material = shapeEntity.getAttribute('material').color; // 获取当前颜色
+            const material = shapeEntity.getAttribute('material'); // 获取当前颜色
             const geometry = shapeEntity.getAttribute('geometry'); // 获取几何形状属性
             let colorInfo = `颜色: ${material.color}`; // 获取当前颜色
             let sizeInfo = "";
