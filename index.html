@@ -65,10 +65,11 @@
 
         // 点击实体时显示颜色和大小信息
         shapeEntity.addEventListener('click', function () {
-            const color = shapeEntity.getAttribute('material').color; // 获取当前颜色
+            const material = shapeEntity.getAttribute('material').color; // 获取当前颜色
             const geometry = shapeEntity.getAttribute('geometry'); // 获取几何形状属性
-
+            let colorInfo = `颜色: ${material.color}`; // 获取当前颜色
             let sizeInfo = "";
+            
             if (geometry.primitive === "box") {
                 // 如果是方块，显示高度、宽度和深度
                 sizeInfo = `大小: 高度 ${geometry.height}, 宽度 ${geometry.width}, 深度 ${geometry.depth}`;
@@ -77,7 +78,7 @@
                 sizeInfo = `大小: 半径 ${geometry.radius}`;
             }
 
-            alert(`颜色: ${color}\n${sizeInfo}`); // 显示颜色和大小信息
+            alert(` ${colorinfo}\n${sizeInfo}`); // 显示颜色和大小信息
         });
 
     </script>
