@@ -52,6 +52,22 @@
                 default:
                     break; // 其他情况不处理
             }
+           / 点击事件监听，点击时显示实体颜色和大小
+        shapeEntity.addEventListener('click', function () {
+            const color = shapeEntity.getAttribute('material').color; // 获取当前颜色
+            const geometry = shapeEntity.getAttribute('geometry'); // 获取几何形状属性
+
+            let sizeInfo = "";
+            if (geometry.primitive === "box") {
+                // 如果是方块，显示高度、宽度和深度
+                sizeInfo = `大小: 高度 ${geometry.height}, 宽度 ${geometry.width}, 深度 ${geometry.depth}`;
+            } else if (geometry.primitive === "sphere") {
+                // 如果是球体，显示半径
+                sizeInfo = `大小: 半径 ${geometry.radius}`;
+            }
+
+            alert(`当前颜色是: ${color}\n${sizeInfo}`); // 显示颜色和大小信息
+        });
 
             //options.selectedIndex = 0; // 重置选择
         });
