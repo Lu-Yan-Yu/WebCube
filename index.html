@@ -28,8 +28,8 @@
     <a-scene embedded>
         <!-- 实体 -->
         <a-entity id="shapeEntity" class="clickable" geometry="primitive: box; height: 0.5; width: 0.5; depth: 0.5" 
-                  material="color: rgb(0, 0, 180)" position="0 1 -3" rotation="0 45 0"></a-entity>
-        <a-camera raycaster="objects: .clickable"></a-camera> <!-- 使用类选择器 -->
+                  material="color: rgb(70, 130, 180)" position="0 1 -3" rotation="0 45 0"></a-entity>
+        <a-camera raycaster="objects: .clickable"></a-camera>
     </a-scene>
 
     <script>
@@ -74,10 +74,8 @@
             let sizeInfo = "";
             
             if (geometry.primitive === "box") {
-                // 如果是方块，显示高度、宽度和深度
                 sizeInfo = `大小: 高度 ${geometry.height}, 宽度 ${geometry.width}, 深度 ${geometry.depth}`;
             } else if (geometry.primitive === "sphere") {
-                // 如果是球体，显示半径
                 sizeInfo = `大小: 半径 ${geometry.radius}`;
             }
 
