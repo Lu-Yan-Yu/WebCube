@@ -29,7 +29,7 @@
         <!-- 实体 -->
         <a-entity id="shapeEntity" class="clickable" geometry="primitive: box; height: 0.5; width: 0.5; depth: 0.5" 
                   material="color: rgb(70, 130, 180)" position="0 1 -3" rotation="0 45 0"></a-entity>
-        <a-camera raycaster="objects: .clickable"></a-camera>
+        <a-camera raycaster="objects: .clickable; far: 10"></a-camera>
     </a-scene>
 
     <script>
@@ -62,25 +62,23 @@
                     break;
             }
         });
-
         // 点击实体时显示颜色和大小信息
-        shapeEntity.addEventListener('click', function () {
-            console.log("实体被点击"); // 确认点击事件触发
-            const material = shapeEntity.getAttribute('material'); // 获取当前颜色
-            const geometry = shapeEntity.getAttribute('geometry'); // 获取几何形状属性
-            console.log("当前geometry属性：", geometry); // 调试geometry内容
+        shapeEntity.addEventListener('raycaster-intersected', function () {
+    console.log("实体被点击");
+    const material = shapeEntity.getAttribute('material');
+    const geometry = shapeEntity.getAttribute('geometry');
+    let colorInfo = `颜色: ${material.color}`;
+    let sizeInfo = "";
 
-            let colorInfo = `颜色: ${material.color}`; // 获取当前颜色
-            let sizeInfo = "";
-            
-            if (geometry.primitive === "box") {
-                sizeInfo = `大小: 高度 ${geometry.height}, 宽度 ${geometry.width}, 深度 ${geometry.depth}`;
-            } else if (geometry.primitive === "sphere") {
-                sizeInfo = `大小: 半径 ${geometry.radius}`;
-            }
+    if (geometry.primitive === "box") {
+        sizeInfo = `大小: 高度 ${geometry.height}, 宽度 ${geometry.width}, 深度 ${geometry.depth}`;
+    } else if (geometry.primitive === "sphere") {
+        sizeInfo = `大小: 半径 ${geometry.radius}`;
+    }
 
-            alert(`${colorInfo}\n${sizeInfo}`); // 显示颜色和大小信息
-        });
+    alert(`${colorInfo}\n${sizeInfo}`);
+});
+
 
     </script>
 </body>
