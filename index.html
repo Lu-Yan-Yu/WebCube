@@ -17,12 +17,14 @@
     </a-scene>
 
     <script>
-        // 监听点击事件
-        document.getElementById('shapeEntity').onclick= function () {
+        // 使用 A-Frame 的事件系统监听点击事件
+        const shapeEntity = document.getElementById('shapeEntity');
+        shapeEntity.addEventListener('click', function () {
             alert("你点击了实体！");
-            console.log('Button clicked!');
-        }
-        document.getElementById('shapeEntity').style.color = 'red';
+            console.log('Entity clicked!');
+            // 改变颜色
+            shapeEntity.setAttribute('material', 'color', 'red');
+        });
     </script>
 </body>
 </html>
