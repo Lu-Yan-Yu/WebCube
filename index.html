@@ -1,75 +1,87 @@
-A-Frame Version: 1.6.0 (Date 2024-05-23, Commit #0e2163bd)
-index.js:82 THREE Version (https://github.com/supermedium/three.js): 164
-index.js:84 WebVR Polyfill Version: ^0.10.12
-renderer.js:39 THREE.WebGLRenderer: The property .useLegacyLights has been deprecated. Migrate your lighting according to the following guide: https://discourse.threejs.org/t/updates-to-lighting-in-three-js-r155/53733.
-set useLegacyLights @ three.module.js:31816
-init @ renderer.js:39
-e.exports.System @ system.js:43
-i @ system.js:148
-initSystem @ a-scene.js:191
-initSystems @ a-scene.js:182
-doConnectedCallback @ a-scene.js:134
-connectedCallback @ a-node.js:42
-(匿名) @ readyState.js:32
-setTimeout
-t @ readyState.js:31
-e @ readyState.js:20
-顯示另外 1 個頁框
-顯示較少
-aframe-ar.min.js:1 AR.js 2.2.2 - trackingBackend: artoolkit
-aframe-ar.min.js:1 Uncaught TypeError: arContext.addEventListener is not a function
-    at new ARjs.Session (aframe-ar.min.js:1:875212)
-    at v.<anonymous> (aframe-ar.min.js:1:918695)
-    at v.emit (a-node.js:306:10)
-    at v.<anonymous> (a-scene.js:704:17)
-    at v.emit (a-node.js:306:10)
-    at a-node.js:151:12
-ARjs.Session @ aframe-ar.min.js:1
-(匿名) @ aframe-ar.min.js:1
-emit @ a-node.js:306
-(匿名) @ a-scene.js:704
-emit @ a-node.js:306
-(匿名) @ a-node.js:151
-Promise.then
-load @ a-node.js:133
-load @ a-entity.js:227
-(匿名) @ a-scene.js:710
-setTimeout
-play @ a-scene.js:709
-attachedCallbackPostCamera @ a-scene.js:165
-(匿名) @ a-scene.js:131
-emit @ a-node.js:306
-checkUserCamera @ camera.js:98
-(匿名) @ camera.js:58
-emit @ a-node.js:306
-setObject3D @ a-entity.js:150
-init @ camera.js:28
-initComponent @ component.js:253
-updateProperties @ component.js:239
-e.exports.Component @ component.js:107
-n @ component.js:674
-initComponent @ a-entity.js:302
-updateComponent @ a-entity.js:458
-updateComponents @ a-entity.js:429
-(匿名) @ a-entity.js:231
-(匿名) @ a-node.js:145
-Promise.then
-load @ a-node.js:133
-load @ a-entity.js:227
-doConnectedCallback @ a-entity.js:88
-connectedCallback @ a-node.js:42
-(匿名) @ readyState.js:32
-setTimeout
-t @ readyState.js:31
-e @ readyState.js:20
-aframe-ar.min.js:1 Allocated videoFrameSize 1228800
-aframe-ar.min.js:1 Pattern detection mode set to 1.
-aframe-ar.min.js:1 Pattern ratio size set to 0.500000.
-aframe-ar.min.js:1 Labeling mode set to 1
-aframe-ar.min.js:1 Uncaught TypeError: _this.dispatchEvent is not a function
-    at done (aframe-ar.min.js:1:844095)
-    at ARCameraParam.onload (aframe-ar.min.js:1:847618)
-    at aframe-ar.min.js:1:820532
-    at writeCallback (aframe-ar.min.js:1:823317)
-    at writeByteArrayToFS (aframe-ar.min.js:1:823836)
-    at oReq.onload (aframe-ar.min.js:1:824078)
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>AR.js A-Frame Scene</title>
+    <script src='https://aframe.io/releases/1.2.0/aframe.min.js'></script>
+    <script src="https://raw.githack.com/jeromeetienne/AR.js/master/aframe/build/aframe-ar.min.js"></script>
+</head>
+
+<body style='margin: 0; overflow: hidden;'>
+
+    <!-- 跳转按钮 -->
+    <a href="https://forms.gle/q8jHTfVkKbXCjR9i7" target="_blank">
+        <button id="linkButton" style="position: absolute; z-index: 10; top: 10px; right: 10px; width:50px; height:50px;">前往投票</button>
+    </a>
+
+    <!-- 下拉菜单 -->
+    <select id="options" style="position: absolute; z-index: 10; top: 10px; left: 10px; width:100px;height:50px;">
+        <option value="">更換方案</option>
+        <option value="option1">方案一</option>
+        <option value="option2">方案二</option>
+        <option value="option3">方案三</option>
+        <option value="option4">方案四</option>
+    </select>
+
+    <!-- AR 场景 -->
+    <a-scene embedded>
+        <!-- 实体 -->
+        <a-entity id="shapeEntity" class="clickable" geometry="primitive: box; height: 0.5; width: 0.5; depth: 0.5" 
+                  material="color: rgb(70, 130, 180)" position="0 1 -3" rotation="0 45 0"></a-entity>
+        <a-camera raycaster="objects: .clickable"></a-camera>
+    </a-scene>
+
+    <script>
+        // 获取实体和选项菜单元素
+        const shapeEntity = document.getElementById('shapeEntity');
+        const options = document.getElementById('options');
+
+        // 监听下拉菜单变化事件
+        options.addEventListener('change', function() {
+            const selectedValue = options.value;
+
+            switch (selectedValue) {
+                case 'option1':
+                    shapeEntity.setAttribute('geometry', 'primitive: box; height: 0.5; width: 0.5; depth: 0.5'); // 方块
+                    shapeEntity.setAttribute('material', 'color: rgb(70, 130, 180)'); // 蓝色
+                    break;
+                case 'option2':
+                    shapeEntity.setAttribute('geometry', 'primitive: box; height: 0.5; width: 0.5; depth: 0.5'); // 方块
+                    shapeEntity.setAttribute('material', 'color: rgb(205, 112, 84)'); // 红色
+                    break;
+                case 'option3':
+                    shapeEntity.setAttribute('geometry', 'primitive: sphere; radius: 0.4'); // 球体
+                    shapeEntity.setAttribute('material', 'color: rgb(70, 130, 180)'); // 蓝色
+                    break;
+                case 'option4':
+                    shapeEntity.setAttribute('geometry', 'primitive: sphere; radius: 0.4'); // 球体
+                    shapeEntity.setAttribute('material', 'color: rgb(205, 112, 84)'); // 红色
+                    break;
+                default:
+                    break;
+            }
+        });
+
+        // 点击实体时显示颜色和大小信息
+        shapeEntity.addEventListener('click', function () {
+            console.log("实体被点击"); // 确认点击事件触发
+            const material = shapeEntity.getAttribute('material'); // 获取当前颜色
+            const geometry = shapeEntity.getAttribute('geometry'); // 获取几何形状属性
+            console.log("当前geometry属性：", geometry); // 调试geometry内容
+
+            let colorInfo = `颜色: ${material.color}`; // 获取当前颜色
+            let sizeInfo = "";
+            
+            if (geometry.primitive === "box") {
+                sizeInfo = `大小: 高度 ${geometry.height}, 宽度 ${geometry.width}, 深度 ${geometry.depth}`;
+            } else if (geometry.primitive === "sphere") {
+                sizeInfo = `大小: 半径 ${geometry.radius}`;
+            }
+
+            alert(`${colorInfo}\n${sizeInfo}`); // 显示颜色和大小信息
+        });
+
+    </script>
+</body>
+</html>
