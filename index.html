@@ -5,11 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Google Geospatial API AR</title>
     <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@googlemaps/ar@1.0.2/dist/index.js"></script>
+    <script async
+        src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=visualization">
+    </script>
+    <style>
+        #map { width: 100%; height: 100%; position: absolute; top: 0; left: 0; }
+    </style>
 </head>
 <body style="margin: 0; overflow: hidden;">
-    <!-- 页面内容 -->
     <div id="map"></div>
+    <button id="start-ar" style="position: absolute; top: 10px; left: 10px; z-index: 10;">
+        启动 AR
+    </button>
+
     <a-scene embedded arjs>
         <!-- 模型 -->
         <a-entity id="shapeEntity"
@@ -21,49 +29,67 @@
     </a-scene>
 
     <script>
-        // 配置 API 密钥
-        const API_KEY = "AIzaSyAkYeCPMKQ8y72C0Pa1zOXPNFswsfjejpk";
-
-        // 初始化 Geospatial API
         async function initializeGeospatial() {
+            const status = document.createElement("div");
+            status.style.position = "absolute";
+            status.style.top = "50px";
+            status.style.left = "10px";
+            status.style.color = "white";
+            document.body.appendChild(status);
+
             if (!navigator.xr) {
-                alert("您的设备不支持 WebXR。");
+                status.innerText = "您的设备不支持 WebXR。";
+                console.error("WebXR not supported.");
                 return;
             }
 
-            const session = await navigator.xr.requestSession("immersive-ar", {
-                requiredFeatures: ["local-floor", "geospatial"],
-            });
+            try {
+                const supported = await navigator.xr.isSessionSupported("immersive-ar");
+                if (!supported) {
+                    status.innerText = "您的设备不支持 Immersive AR。";
+                    console.error("Immersive AR not supported.");
+                    return;
+                }
 
-            // 初始化 Google Maps Geospatial API
-            const geospatial = await session.requestFeature("geospatial");
-            const viewer = new google.maps.visualization.Viewer({
-                map: document.getElementById("map"),
-                apiKey: API_KEY,
-            });
+                status.innerText = "设备支持 Immersive AR，正在检查 Geospatial 支持...";
+                const session = await navigator.xr.requestSession("immersive-ar", {
+                    requiredFeatures: ["local-floor", "geospatial"],
+                });
 
-            // 设置目标位置的经纬度
-            const targetLocation = {
-                latitude: 22.998774,
-                longitude: 120.219917,
-                altitude: 10, // 可选：设置目标位置的高度（单位：米）
-            };
+                if (!session) {
+                    status.innerText = "无法创建带 Geospatial 功能的 AR 会话。";
+                    console.error("Failed to start AR session.");
+                    return;
+                }
 
-            // 添加 Anchor
-            viewer.addAnchor({
-                position: targetLocation,
-                rotation: { x: 0, y: 0, z: 0 },
-                model: {
-                    uri: "path/to/3d-model.glb", // 替换为您的模型路径
-                    scale: { x: 1, y: 1, z: 1 },
-                },
-            });
+                status.innerText = "Geospatial API 已启用！";
+                console.log("Geospatial session started:", session);
 
-            viewer.render();
+                initializeGoogleMapsGeospatial();
+            } catch (error) {
+                status.innerText = "初始化 Geospatial 失败：" + error.message;
+                console.error("Failed to initialize Geospatial:", error);
+            }
         }
 
-        // 执行初始化
-        initializeGeospatial();
+        function initializeGoogleMapsGeospatial() {
+            const map = new google.maps.Map(document.getElementById("map"), {
+                center: { lat: 22.998774, lng: 120.219917 },
+                zoom: 15,
+            });
+
+            new google.maps.Marker({
+                position: { lat: 22.998774, lng: 120.219917 },
+                map: map,
+                title: "目标位置",
+            });
+
+            console.log("Google Maps Geospatial 初始化完成！");
+        }
+
+        document.getElementById("start-ar").addEventListener("click", () => {
+            initializeGeospatial();
+        });
     </script>
 </body>
 </html>
