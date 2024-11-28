@@ -1,85 +1,69 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset='utf-8'>
-    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
-    <title>AR.js A-Frame Scene</title>
-    <script src='https://aframe.io/releases/1.2.0/aframe.min.js'></script>
-    <script src="https://raw.githack.com/jeromeetienne/AR.js/master/aframe/build/aframe-ar.min.js"></script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Google Geospatial API AR</title>
+    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@googlemaps/ar@1.0.2/dist/index.js"></script>
 </head>
-
-<body style='margin: 0; overflow: hidden;'>
-
-    <!-- 跳转按钮 -->
-    <a href="https://forms.gle/q8jHTfVkKbXCjR9i7" target="_blank">
-        <button id="linkButton" style="position: absolute; z-index: 10; top: 10px; right: 10px; width:50px; height:50px;">前往投票</button>
-    </a>
-
-    <!-- 下拉菜单 -->
-    <select id="options" style="position: absolute; z-index: 10; top: 10px; left: 10px; width:100px;height:50px;">
-        <option value="">更換方案</option>
-        <option value="option1">方案一</option>
-        <option value="option2">方案二</option>
-        <option value="option3">方案三</option>
-        <option value="option4">方案四</option>
-    </select>
-
-    <!-- AR 场景 -->
-    <a-scene embedded>
-        <!-- 实体 -->
-        <a-entity id="shapeEntity" class="clickable" geometry="primitive: box; height: 0.5; width: 0.5; depth: 0.5" 
-                  material="color: rgb(70, 130, 180)" position="0 1 -3" rotation="0 45 0"></a-entity>
-        <a-camera raycaster="objects: .clickable; far: 10"></a-camera>
+<body style="margin: 0; overflow: hidden;">
+    <!-- 页面内容 -->
+    <div id="map"></div>
+    <a-scene embedded arjs>
+        <!-- 模型 -->
+        <a-entity id="shapeEntity"
+                  geometry="primitive: box; height: 0.5; width: 0.5; depth: 0.5"
+                  material="color: rgb(70, 130, 180)">
+        </a-entity>
+        <!-- 摄像头 -->
+        <a-camera gps-camera></a-camera>
     </a-scene>
 
     <script>
-        // 获取实体和选项菜单元素
-        const shapeEntity = document.getElementById('shapeEntity');
-        const options = document.getElementById('options');
+        // 配置 API 密钥
+        const API_KEY = "AIzaSyAkYeCPMKQ8y72C0Pa1zOXPNFswsfjejpk";
 
-        // 监听下拉菜单变化事件
-        options.addEventListener('change', function() {
-            const selectedValue = options.value;
-
-            switch (selectedValue) {
-                case 'option1':
-                    shapeEntity.setAttribute('geometry', 'primitive: box; height: 0.5; width: 0.5; depth: 0.5'); // 方块
-                    shapeEntity.setAttribute('material', 'color: rgb(70, 130, 180)'); // 蓝色
-                    break;
-                case 'option2':
-                    shapeEntity.setAttribute('geometry', 'primitive: box; height: 0.5; width: 0.5; depth: 0.5'); // 方块
-                    shapeEntity.setAttribute('material', 'color: rgb(205, 112, 84)'); // 红色
-                    break;
-                case 'option3':
-                    shapeEntity.setAttribute('geometry', 'primitive: sphere; radius: 0.4'); // 球体
-                    shapeEntity.setAttribute('material', 'color: rgb(70, 130, 180)'); // 蓝色
-                    break;
-                case 'option4':
-                    shapeEntity.setAttribute('geometry', 'primitive: sphere; radius: 0.4'); // 球体
-                    shapeEntity.setAttribute('material', 'color: rgb(205, 112, 84)'); // 红色
-                    break;
-                default:
-                    break;
+        // 初始化 Geospatial API
+        async function initializeGeospatial() {
+            if (!navigator.xr) {
+                alert("您的设备不支持 WebXR。");
+                return;
             }
-        });
-        // 点击实体时显示颜色和大小信息
-        shapeEntity.addEventListener('raycaster-intersected', function () {
-    console.log("实体被点击");
-    const material = shapeEntity.getAttribute('material');
-    const geometry = shapeEntity.getAttribute('geometry');
-    let colorInfo = `颜色: ${material.color}`;
-    let sizeInfo = "";
 
-    if (geometry.primitive === "box") {
-        sizeInfo = `大小: 高度 ${geometry.height}, 宽度 ${geometry.width}, 深度 ${geometry.depth}`;
-    } else if (geometry.primitive === "sphere") {
-        sizeInfo = `大小: 半径 ${geometry.radius}`;
-    }
+            const session = await navigator.xr.requestSession("immersive-ar", {
+                requiredFeatures: ["local-floor", "geospatial"],
+            });
 
-    alert(`${colorInfo}\n${sizeInfo}`);
-});
+            // 初始化 Google Maps Geospatial API
+            const geospatial = await session.requestFeature("geospatial");
+            const viewer = new google.maps.visualization.Viewer({
+                map: document.getElementById("map"),
+                apiKey: API_KEY,
+            });
 
+            // 设置目标位置的经纬度
+            const targetLocation = {
+                latitude: 23.0015,
+                longitude: 120.2203,
+                altitude: 10, // 可选：设置目标位置的高度（单位：米）
+            };
 
+            // 添加 Anchor
+            viewer.addAnchor({
+                position: targetLocation,
+                rotation: { x: 0, y: 0, z: 0 },
+                model: {
+                    uri: "path/to/3d-model.glb", // 替换为您的模型路径
+                    scale: { x: 1, y: 1, z: 1 },
+                },
+            });
+
+            viewer.render();
+        }
+
+        // 执行初始化
+        initializeGeospatial();
     </script>
 </body>
 </html>
