@@ -20,6 +20,9 @@
         <a-camera gps-camera></a-camera>
     </a-scene>
 
+    <!-- 添加一个按钮触发 AR -->
+    <button id="start-ar" style="position: absolute; top: 10px; left: 10px; z-index: 100;">启动 AR</button>
+
     <script>
         // 配置 API 密钥
         const API_KEY = "AIzaSyAkYeCPMKQ8y72C0Pa1zOXPNFswsfjejpk";
@@ -32,12 +35,12 @@
             }
 
             try {
+                // 请求 WebXR 会话
                 const session = await navigator.xr.requestSession("immersive-ar", {
                     requiredFeatures: ["local-floor", "geospatial"],
                 });
 
                 // 初始化 Google Maps Geospatial API
-                const geospatial = await session.requestFeature("geospatial");
                 const viewer = new google.maps.visualization.Viewer({
                     map: document.getElementById("map"),
                     apiKey: API_KEY,
@@ -67,8 +70,10 @@
             }
         }
 
-        // 执行初始化
-        initializeGeospatial();
+        // 为按钮绑定点击事件
+        document.getElementById("start-ar").addEventListener("click", () => {
+            initializeGeospatial();
+        });
 
         // 检查设备是否支持 Immersive AR 和 geospatial
         if (navigator.xr) {
