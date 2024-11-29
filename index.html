@@ -2,110 +2,31 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Google Geospatial API AR</title>
-    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@googlemaps/ar@1.0.2/dist/index.js"></script>
+    <title>Geospatial 功能检测</title>
 </head>
-<body style="margin: 0; overflow: hidden;">
-    <!-- 页面内容 -->
-    <div id="map"></div>
-    <a-scene embedded arjs>
-        <!-- 模型 -->
-        <a-entity id="shapeEntity"
-                  geometry="primitive: box; height: 0.5; width: 0.5; depth: 0.5"
-                  material="color: rgb(70, 130, 180)">
-        </a-entity>
-        <!-- 摄像头 -->
-        <a-camera gps-camera></a-camera>
-    </a-scene>
-
-    <!-- 添加一个按钮触发 AR -->
-    <button id="start-ar" style="position: absolute; top: 10px; left: 10px; z-index: 100;">启动 AR</button>
-
+<body>
+    <h1>检测 Geospatial 功能</h1>
+    <p id="result">正在检测设备支持情况...</p>
     <script>
-        // 配置 API 密钥
-        const API_KEY = "AIzaSyCXXsDAtYnyzbwL4WcFxS6e8YWwksVE7YM";
-
-        // 初始化 Geospatial API
-        async function initializeGeospatial() {
-            if (!navigator.xr) {
-                alert("您的设备不支持 WebXR。");
-                return;
-            }
-
-            try {
-                // 请求 WebXR 会话
-                const session = await navigator.xr.requestSession("immersive-ar", {
-                    requiredFeatures: ["local-floor", "geospatial"],
-                });
-
-                // 初始化 Google Maps Geospatial API
-                const viewer = new google.maps.visualization.Viewer({
-                    map: document.getElementById("map"),
-                    apiKey: API_KEY,
-                });
-
-                // 设置目标位置的经纬度
-                const targetLocation = {
-                    latitude: 22.998774,
-                    longitude: 120.219917,
-                    altitude: 10, // 可选：设置目标位置的高度（单位：米）
-                };
-
-                // 添加 Anchor
-                viewer.addAnchor({
-                    position: targetLocation,
-                    rotation: { x: 0, y: 0, z: 0 },
-                    model: {
-                        uri: "path/to/3d-model.glb", // 替换为您的模型路径
-                        scale: { x: 1, y: 1, z: 1 },
-                    },
-                });
-
-                viewer.render();
-            } catch (error) {
-                console.error("Failed to initialize Geospatial:", error);
-                alert("初始化 Geospatial 失败：" + error.message);
-            }
-        }
-
-        // 为按钮绑定点击事件
-        document.getElementById("start-ar").addEventListener("click", () => {
-            initializeGeospatial();
-        });
-
-        // 检查设备是否支持 Immersive AR 和 geospatial
-        if (navigator.xr) {
-            navigator.xr.isSessionSupported("immersive-ar")
-                .then((supported) => {
-                    if (supported) {
-                        console.log("设备支持 Immersive AR。");
-
-                        // 检查 geospatial 特性
-                        navigator.xr.requestSession("immersive-ar", { requiredFeatures: ["geospatial"] })
-                            .then(() => {
-                                console.log("设备支持 geospatial 特性！");
-                                alert("设备支持 geospatial 特性！");
-                            })
-                            .catch((error) => {
-                                console.error("设备不支持 geospatial 特性：", error);
-                                alert("设备不支持 geospatial 特性：" + error.message);
-                            });
-
-                    } else {
-                        console.log("设备不支持 Immersive AR。");
-                        alert("设备不支持 Immersive AR！");
-                    }
-                })
-                .catch((error) => {
-                    console.error("检查 WebXR 支持时出错：", error);
-                    alert("检查 WebXR 支持时出错：" + error.message);
-                });
-        } else {
-            console.log("您的设备或浏览器不支持 WebXR。");
-            alert("您的设备或浏览器不支持 WebXR。");
-        }
+        // 检测是否支持 Geospatial API
+        navigator.xr.isSessionSupported('immersive-ar')
+            .then((arSupported) => {
+                if (arSupported) {
+                    return navigator.xr.isSessionSupported('geospatial');
+                } else {
+                    throw new Error("设备不支持 WebXR 的 immersive-ar 功能");
+                }
+            })
+            .then((geospatialSupported) => {
+                if (geospatialSupported) {
+                    document.getElementById("result").innerText = "设备支持 Geospatial 功能！";
+                } else {
+                    document.getElementById("result").innerText = "设备支持 AR，但不支持 Geospatial 功能。";
+                }
+            })
+            .catch((error) => {
+                document.getElementById("result").innerText = "检测失败: " + error.message;
+            });
     </script>
 </body>
 </html>
