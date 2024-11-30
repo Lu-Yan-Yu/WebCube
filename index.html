@@ -8,18 +8,31 @@
     <h1>检测 Geospatial 功能</h1>
     <p id="result">正在检测设备支持情况...</p>
     <script>
-        navigator.xr.isSessionSupported('immersive-ar')
-            .then((arSupported) => {
-                if (arSupported) {
-                    console.log("设备支持 AR 功能！");
-                    // 在这里可以进一步测试 Geospatial 功能
-                } else {
-                    console.log("设备不支持 AR 功能");
-                }
-            })
-            .catch((error) => {
-                console.log("检测失败:", error.message);
-            });
+        function checkAuthorization() {
+            // Replace this with your actual authorization logic
+            // For example, you might check a token or a user session
+            const authorized = true; // Replace with actual check
+
+            return authorized;
+        }
+
+        if (checkAuthorization()) {
+            navigator.xr.isSessionSupported('immersive-ar')
+                .then((arSupported) => {
+                    if (arSupported) {
+                        console.log("设备支持 AR 功能！");
+                        // 在这里可以进一步测试 Geospatial 功能
+                    } else {
+                        console.log("设备不支持 AR 功能");
+                    }
+                })
+                .catch((error) => {
+                    console.log("检测失败:", error.message);
+                });
+        } else {
+            console.log("未授权访问");
+            document.getElementById("result").innerText = "未授权访问";
+        }
     </script>
 </body>
 </html>
