@@ -2,31 +2,62 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>Geospatial 功能检测</title>
+    <title>Geospatial AR Test</title>
 </head>
 <body>
-    <h1>检测 Geospatial 功能</h1>
-    <p id="result">正在检测设备支持情况...</p>
+    <h1>Testing Geospatial AR Features</h1>
+    <p id="result">Checking device support...</p>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three/examples/js/loaders/GLTFLoader.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@webxr-polyfill/webxr-polyfill@latest/build/webxr-polyfill.min.js"></script>
     <script>
-        // 检测是否支持 Geospatial API
-        navigator.xr.isSessionSupported('immersive-ar')
-            .then((arSupported) => {
-                if (arSupported) {
-                    return navigator.xr.isSessionSupported('geospatial');
-                } else {
-                    throw new Error("设备不支持 WebXR 的 immersive-ar 功能");
-                }
-            })
-            .then((geospatialSupported) => {
-                if (geospatialSupported) {
-                    document.getElementById("result").innerText = "设备支持 Geospatial 功能！";
-                } else {
-                    document.getElementById("result").innerText = "设备支持 AR，但不支持 Geospatial 功能。";
-                }
-            })
-            .catch((error) => {
-                document.getElementById("result").innerText = "检测失败: " + error.message;
+    if (navigator.xr) {
+        navigator.xr.isSessionSupported('immersive-ar').then((supported) => {
+            if (supported) {
+                document.getElementById('result').innerText = "Device supports AR and Geospatial features!";
+                setupAR();
+            } else {
+                document.getElementById('result').innerText = "Device supports AR but not Geospatial features.";
+            }
+        }).catch((error) => {
+            document.getElementById('result').innerText = "Failed to detect AR support: " + error.message;
+        });
+    } else {
+        document.getElementById('result').innerText = "WebXR is not supported on this device.";
+    }
+
+    function setupAR() {
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ alpha: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.xr.enabled = true;
+        document.body.appendChild(renderer.domElement);
+
+        const loader = new THREE.GLTFLoader();
+        loader.load('path/to/your/model.gltf', function (gltf) {
+            const model = gltf.scene;
+            scene.add(model);
+
+            // Set the position (latitude=22.998774, longitude=120.219917)
+            const latitude = 22.998774;
+            const longitude = 120.219917;
+            const altitude = 0; // Adjust based on your needs
+
+            // Convert geospatial coordinates to Three.js coordinates
+            const radius = 6371; // Earth's radius in kilometers
+            const phi = (90 - latitude) * (Math.PI / 180);
+            const theta = (longitude + 180) * (Math.PI / 180);
+
+            model.position.x = radius * Math.sin(phi) * Math.cos(theta);
+            model.position.y = radius * Math.cos(phi);
+            model.position.z = radius * Math.sin(phi) * Math.sin(theta);
+
+            renderer.setAnimationLoop(() => {
+                renderer.render(scene, camera);
             });
+        });
+    }
     </script>
 </body>
 </html>
