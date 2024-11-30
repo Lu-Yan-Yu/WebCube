@@ -6,26 +6,10 @@
 </head>
 <body>
     <h1>Testing Geospatial AR Features</h1>
-    <p id="result">Checking device support...</p>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three/examples/js/loaders/GLTFLoader.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@webxr-polyfill/webxr-polyfill@latest/build/webxr-polyfill.min.js"></script>
     <script>
-    if (navigator.xr) {
-        navigator.xr.isSessionSupported('immersive-ar').then((supported) => {
-            if (supported) {
-                document.getElementById('result').innerText = "Device supports AR and Geospatial features!";
-                setupAR();
-            } else {
-                document.getElementById('result').innerText = "Device supports AR but not Geospatial features.";
-            }
-        }).catch((error) => {
-            document.getElementById('result').innerText = "Failed to detect AR support: " + error.message;
-        });
-    } else {
-        document.getElementById('result').innerText = "WebXR is not supported on this device.";
-    }
-
     function setupAR() {
         const scene = new THREE.Scene();
         const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
@@ -33,6 +17,10 @@
         renderer.setSize(window.innerWidth, window.innerHeight);
         renderer.xr.enabled = true;
         document.body.appendChild(renderer.domElement);
+
+        navigator.xr.requestSession('immersive-ar', { requiredFeatures: ['local-floor', 'bounded-floor'] }).then((session) => {
+            renderer.xr.setSession(session);
+        });
 
         const loader = new THREE.GLTFLoader();
         loader.load('https://github.com/Lu-Yan-Yu/WebCube/blob/main/pyro_for_prisma_3d.zip', function (gltf) {
@@ -58,6 +46,8 @@
             });
         });
     }
+    
+    setupAR();
     </script>
 </body>
 </html>
