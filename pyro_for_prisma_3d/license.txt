@@ -1,0 +1,11 @@
+Model Information:
+* title:	Pyro:) for prisma 3d
+* source:	https://sketchfab.com/3d-models/pyro-for-prisma-3d-b7e70c43ab814b8cb601c0c0f3f02659
+* author:	Ian36r (https://sketchfab.com/Ian36r)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Pyro:) for prisma 3d" (https://sketchfab.com/3d-models/pyro-for-prisma-3d-b7e70c43ab814b8cb601c0c0f3f02659) by Ian36r (https://sketchfab.com/Ian36r) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
