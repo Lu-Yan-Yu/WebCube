@@ -10,41 +10,50 @@
     <script src="https://cdn.jsdelivr.net/npm/three/examples/js/loaders/GLTFLoader.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@webxr-polyfill/webxr-polyfill@latest/build/webxr-polyfill.min.js"></script>
     <script>
-    function setupAR() {
-        const scene = new THREE.Scene();
-        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-        const renderer = new THREE.WebGLRenderer({ alpha: true });
-        renderer.setSize(window.innerWidth, window.innerHeight);
-        renderer.xr.enabled = true;
-        document.body.appendChild(renderer.domElement);
+    async function setupAR() {
+        try {
+            // Request camera permissions
+            await navigator.mediaDevices.getUserMedia({ video: true });
+            console.log("Camera permission granted");
 
-        navigator.xr.requestSession('immersive-ar', { requiredFeatures: ['local-floor', 'bounded-floor'] }).then((session) => {
+            const scene = new THREE.Scene();
+            const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            const renderer = new THREE.WebGLRenderer({ alpha: true });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.xr.enabled = true;
+            document.body.appendChild(renderer.domElement);
+
+            const session = await navigator.xr.requestSession('immersive-ar', { requiredFeatures: ['local-floor', 'bounded-floor'] });
             renderer.xr.setSession(session);
-        });
 
-        const loader = new THREE.GLTFLoader();
-        loader.load('https://github.com/Lu-Yan-Yu/WebCube/blob/main/pyro_for_prisma_3d.zip', function (gltf) {
-            const model = gltf.scene;
-            scene.add(model);
+            const loader = new THREE.GLTFLoader();
+            loader.load('https://github.com/Lu-Yan-Yu/WebCube/blob/main/pyro_for_prisma_3d.zip', function (gltf) {
+                const model = gltf.scene;
+                scene.add(model);
 
-            // Set the position (latitude=22.998774, longitude=120.219917)
-            const latitude = 22.998774;
-            const longitude = 120.219917;
-            const altitude = 0; // Adjust based on your needs
+                // Set the position (latitude=22.998774, longitude=120.219917)
+                const latitude = 22.998774;
+                const longitude = 120.219917;
+                const altitude = 0; // Adjust based on your needs
 
-            // Convert geospatial coordinates to Three.js coordinates
-            const radius = 6371; // Earth's radius in kilometers
-            const phi = (90 - latitude) * (Math.PI / 180);
-            const theta = (longitude + 180) * (Math.PI / 180);
+                // Convert geospatial coordinates to Three.js coordinates
+                const radius = 6371; // Earth's radius in kilometers
+                const phi = (90 - latitude) * (Math.PI / 180);
+                const theta = (longitude + 180) * (Math.PI / 180);
 
-            model.position.x = radius * Math.sin(phi) * Math.cos(theta);
-            model.position.y = radius * Math.cos(phi);
-            model.position.z = radius * Math.sin(phi) * Math.sin(theta);
+                model.position.x = radius * Math.sin(phi) * Math.cos(theta);
+                model.position.y = radius * Math.cos(phi);
+                model.position.z = radius * Math.sin(phi) * Math.sin(theta);
 
-            renderer.setAnimationLoop(() => {
-                renderer.render(scene, camera);
+                renderer.setAnimationLoop(() => {
+                    renderer.render(scene, camera);
+                });
+            }, undefined, function (error) {
+                console.error("Error loading model:", error);
             });
-        });
+        } catch (error) {
+            console.error("Camera permission denied or error occurred", error);
+        }
     }
     
     setupAR();
