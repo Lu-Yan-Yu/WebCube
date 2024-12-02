@@ -6,14 +6,25 @@
     <title>AR.js A-Frame Scene</title>
     <script src='https://aframe.io/releases/1.6.0/aframe.min.js'></script>
     <script src="https://github.com/jeromeetienne/AR.js/blob/location-based/aframe/build/aframe-ar.min.js"></script>
+    <script src="https://raw.github.com/donmccurdy/aframe-extras/master/dist/aframe-extras.loaders.min.js"></script>
+    <script>
+        THREEx.ArToolkitContext.baseURL = 'https://raw.github.com/jeromeetienne/ar.js/master/three.js/'
+    </script>
 </head>
-
+<script src="./script.js"></script>
 <body style='margin: 0; overflow: hidden;'>
 
     <!-- 跳转按钮 -->
     <a href="https://forms.gle/q8jHTfVkKbXCjR9i7" target="_blank">
         <button id="linkButton" style="position: absolute; z-index: 10; top: 10px; right: 10px; width:50px; height:50px;">前往投票</button>
     </a>
+    <a-scene
+       vr-mode-ui="enabled: false"
+		embedded
+        arjs='sourceType:webcam ; debugUIEnabled: false;'>
+        <a-camera gps-camera rotation-reader>
+		</a-camera>
+	</a-scene>
 
     <!-- 下拉菜单 -->
     <select id="options" style="position: absolute; z-index: 10; top: 10px; left: 10px; width:100px;height:50px;">
@@ -24,19 +35,12 @@
         <option value="option4">方案四</option>
     </select>
 
-    <!-- AR 场景 -->
-    <a-scene embedded>
-        <!-- 实体 -->
-        <a-entity id="shapeEntity" class="clickable" gltf-model="url(https://cors-anywhere.herokuapp.com/https://github.com/Lu-Yan-Yu/WebCube/blob/main/pyro_for_prisma_3d/scene.gltf)" position="0 1 -1" rotation="0 0 0"></a-entity>
-        <a-camera raycaster="objects: .clickable; far: 10"></a-camera>
-    </a-scene>
-
     <script>
-        // 获取实体和选项菜单元素
+        /*// 获取实体和选项菜单元素
         const shapeEntity = document.getElementById('shapeEntity');
         const options = document.getElementById('options');
 
-        /*// 监听下拉菜单变化事件
+        // 监听下拉菜单变化事件
         options.addEventListener('change', function() {
             const selectedValue = options.value;
 
@@ -62,7 +66,7 @@
             }
         });*/
         
-        // 点击实体时显示颜色和大小信息
+       /* // 点击实体时显示颜色和大小信息
         shapeEntity.addEventListener('raycaster-intersected', function () {
     console.log("实体被点击");
     const material = shapeEntity.getAttribute('material');
@@ -77,7 +81,54 @@
     }
 
     alert(`${colorInfo}\n${sizeInfo}`);
-});
+}); */
+    // 在页面加载时执行
+        window.onload = () => {
+            // 调用 staticLoadPlaces() 加载位置数据
+            let places = staticLoadPlaces();
+            // 渲染这些地点
+            renderPlaces(places);
+        };
+
+        // 静态加载地点数据
+        function staticLoadPlaces() {
+            return [
+                {
+                    name: 'Magnemite',
+                    location: {
+                        lat: 22.94, // 替换为你的纬度
+                        lng:121.375, // 替换为你的经度
+                    }
+                },
+            ];
+        }
+
+        // 渲染地点并在场景中添加 3D 模型
+        function renderPlaces(places) {
+            let scene = document.querySelector('a-scene'); // 选择场景
+
+            places.forEach((place) => {
+                let latitude = place.location.lat;
+                let longitude = place.location.lng;
+
+                let model = document.createElement('a-entity');
+                // 设置位置
+                model.setAttribute('gps-entity-place', `latitude: ${latitude}; longitude: ${longitude};`);
+                // 设置模型文件路径
+                model.setAttribute('gltf-model', './pyro_for_prisma_3d/scene.gltf'); // 确保路径正确
+                model.setAttribute('rotation', '0 180 0');
+                model.setAttribute('animation-mixer', '');
+                model.setAttribute('scale', '0.5 0.5 0.5');
+
+                // 加载完成后触发事件
+                model.addEventListener('loaded', () => {
+                    window.dispatchEvent(new CustomEvent('gps-entity-place-loaded'));
+                });
+
+                // 将模型添加到场景中
+                scene.appendChild(model);
+            });
+        }
 
 
     </script>
