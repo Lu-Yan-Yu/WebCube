@@ -8,16 +8,20 @@
     <script src="https://cdn.rawgit.com/jeromeetienne/ar.js/2.2.1/aframe/build/aframe-ar.min.js"></script>
 </head>
 <body style="margin: 0; overflow: hidden;">
-   <a-scene embedded arjs="videoSettings: { width: 1280, height: 720 }">
+    <a-scene embedded arjs="sourceType: webcam; sourceWidth: 1280; sourceHeight: 720;">
         <a-entity gps-entity-place="latitude: 22.94; longitude: 121.375;" 
                   geometry="primitive: box" 
                   material="color: blue" 
                   scale="1 1 1">
         </a-entity>
-        <a-camera gps-camera rotation-reader camera="fov: 60" look-controls wasd-controls></a-camera>
+        <a-camera gps-camera rotation-reader camera="fov: 75" look-controls wasd-controls></a-camera>
     </a-scene>
 
     <script>
+        // 检查设备分辨率与像素比
+        console.log("设备像素比:", window.devicePixelRatio);
+        console.log("实际像素尺寸:", window.innerWidth * window.devicePixelRatio, window.innerHeight * window.devicePixelRatio);
+
         navigator.geolocation.getCurrentPosition(
             (position) => console.log('位置已获取：', position),
             (error) => console.error('无法获取地理位置：', error)
@@ -26,7 +30,6 @@
         document.querySelector('[gps-camera]').addEventListener('gps-camera-update-position', (e) => {
             console.log('GPS 摄像头位置已更新：', e.detail.position);
         });
-        console.log(window.innerWidth, window.innerHeight);
     </script>
 </body>
 </html>
