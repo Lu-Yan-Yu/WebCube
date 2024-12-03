@@ -18,6 +18,15 @@
     </a-scene>
 
     <script>
+        // 动态获取设备分辨率并设置 AR.js 分辨率
+        const deviceWidth = window.innerWidth * window.devicePixelRatio;
+        const deviceHeight = window.innerHeight * window.devicePixelRatio;
+
+        const cameraWidth = deviceWidth < 1280 ? deviceWidth : 1280;
+        const cameraHeight = deviceHeight < 720 ? deviceHeight : 720;
+
+        document.querySelector('a-scene').setAttribute('arjs', `sourceWidth: ${cameraWidth}; sourceHeight: ${cameraHeight}`);
+
         // 检查设备分辨率与像素比
         console.log("设备像素比:", window.devicePixelRatio);
         console.log("实际像素尺寸:", window.innerWidth * window.devicePixelRatio, window.innerHeight * window.devicePixelRatio);
