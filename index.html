@@ -8,7 +8,7 @@
     <script src="https://cdn.rawgit.com/jeromeetienne/ar.js/2.2.1/aframe/build/aframe-ar.min.js"></script>
 </head>
 <body style="margin: 0; overflow: hidden;">
-    <a-scene embedded arjs="sourceType: webcam; debugUIEnabled: false; sourceWidth: 640; sourceHeight: 480; patternRatio: 0.6">
+   <a-scene embedded arjs="videoSettings: { width: 1280, height: 720 }">
         <a-entity gps-entity-place="latitude: 22.94; longitude: 121.375;" 
                   geometry="primitive: box" 
                   material="color: blue" 
@@ -26,6 +26,7 @@
         document.querySelector('[gps-camera]').addEventListener('gps-camera-update-position', (e) => {
             console.log('GPS 摄像头位置已更新：', e.detail.position);
         });
+        console.log(window.innerWidth, window.innerHeight);
     </script>
 </body>
 </html>
