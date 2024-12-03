@@ -8,15 +8,18 @@
     <script src="https://cdn.rawgit.com/jeromeetienne/ar.js/2.2.1/aframe/build/aframe-ar.min.js"></script>
 </head>
 <body style="margin: 0; overflow: hidden;">
-    <a-scene embedded">
-    <a-entity 
+    <a-scene embedded>
+        <!-- Camera with GPS tracking -->
+        <a-camera gps-camera rotation-reader camera></a-camera>
+        
+        <!-- Model positioned relative to the camera -->
+        <a-entity 
             gltf-model="./cube.glb"
             scale="0.5 0.5 0.5"
             position="0 0 -5"  <!-- Position 5 meters in front of the camera -->
             rotation="0 180 0"
             animation-mixer>
         </a-entity>
-    <a-camera gps-camera rotation-reader camera></a-camera>
-</a-scene>
+    </a-scene>
 </body>
 </html>
