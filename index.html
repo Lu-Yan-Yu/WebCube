@@ -10,13 +10,13 @@
 <body style="margin: 0; overflow: hidden;">
     <a-scene embedded>
         <!-- Camera with GPS tracking -->
-        <a-camera gps-camera rotation-reader camera></a-camera>
+        <a-camera gps-camera rotation-reader camera="fov:80"></a-camera>
         
         <!-- Model positioned relative to the camera -->
         <a-entity 
             gltf-model="./cube2.glb"
             scale="0.5 0.5 0.5"
-            position="0 0 -5"  <!-- Position 5 meters in front of the camera -->
+            position="0 0 -2"  <!-- Position 2 meters in front of the camera -->
             rotation="0 180 0"
             animation-mixer>
         </a-entity>
