@@ -8,15 +8,14 @@
     <script src="https://cdn.rawgit.com/jeromeetienne/ar.js/2.2.1/aframe/build/aframe-ar.min.js"></script>
 </head>
 <body style="margin: 0; overflow: hidden;">
-    <a-scene embedded arjs="sourceType: webcam; sourceWidth: 1280; sourceHeight: 720; debugUIEnabled: false; cameraParametersUrl: ./camera_para.dat;">
-        <a-entity gps-entity-place="latitude: 22.94; longitude: 121.375;" 
-                  geometry="primitive: box" 
-                  material="color: blue" 
-                  scale="1 1 1">
-        </a-entity>
-        <a-camera gps-camera rotation-reader camera="fov: 75" look-controls wasd-controls></a-camera>
-    </a-scene>
-
+    <a-scene embedded arjs="sourceType: webcam; sourceWidth: 1280; sourceHeight: 720;">
+    <a-entity gps-entity-place="latitude: 22.94; longitude: 121.375;" 
+              geometry="primitive: box" 
+              material="color: blue" 
+              scale="1 1 1">
+    </a-entity>
+    <a-camera gps-camera rotation-reader camera="fov: 75" look-controls wasd-controls></a-camera>
+</a-scene>
     <script>
         const deviceWidth = window.innerWidth * window.devicePixelRatio;
         const deviceHeight = window.innerHeight * window.devicePixelRatio;
