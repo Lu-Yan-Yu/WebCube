@@ -3,42 +3,39 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AR.js Static Location</title>
-    <!-- 引入 A-Frame 和 AR.js -->
-    <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
+    <title>AR.js Example</title>
+    <!-- 引入稳定版本 -->
+    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
     <script src="https://cdn.rawgit.com/jeromeetienne/ar.js/2.2.1/aframe/build/aframe-ar.min.js"></script>
 </head>
 <body style="margin: 0; overflow: hidden;">
-    <a-scene 
-        embedded 
-        arjs="sourceType: gps; debugUIEnabled: true;">
-        <!-- 添加 GLTF 模型 -->
-        <a-entity 
-            gps-entity-place="latitude: 22.94; longitude: 121.375;"
-            gltf-model="./cube.glb"
-            scale="0.5 0.5 0.5"
-            rotation="0 180 0"
-            animation-mixer>
+    <a-scene embedded arjs="sourceType: webcam; debugUIEnabled: true">
+        <!-- 测试用几何体 -->
+        <a-entity gps-entity-place="latitude: 22.94; longitude: 121.375;"
+                  geometry="primitive: box"
+                  material="color: blue"
+                  scale="1 1 1">
         </a-entity>
-        <!-- GPS 相机 -->
+
+        <!-- GPS 摄像头 -->
         <a-camera gps-camera rotation-reader></a-camera>
     </a-scene>
 
     <script>
-        // 调试地理位置
+        // 检测地理位置获取状态
         navigator.geolocation.getCurrentPosition(
             (position) => console.log('位置已获取：', position),
             (error) => console.error('无法获取地理位置：', error)
         );
 
-        // 摄像头加载事件
+        // 检查摄像头加载状态
         document.querySelector('a-camera').addEventListener('loaded', () => {
             console.log('摄像头已加载成功');
         });
 
-        // GPS 摄像头位置更新
+        // 检查 GPS 数据更新
         document.querySelector('[gps-camera]').addEventListener('gps-camera-update-position', (event) => {
-            console.log('摄像头位置已更新：', event.detail.position);
+            console.log('GPS 摄像头位置已更新：', event.detail.position);
         });
     </script>
 </body>
