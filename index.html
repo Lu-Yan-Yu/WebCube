@@ -8,7 +8,7 @@
     <script src="https://cdn.rawgit.com/jeromeetienne/ar.js/2.2.1/aframe/build/aframe-ar.min.js"></script>
 </head>
 <body style="margin: 0; overflow: hidden;">
-    <a-scene embedded arjs="sourceType: webcam;">
+    <a-scene embedded arjs="sourceType: webcam; sourceWidth: 1280; sourceHeight: 720;">
         <a-entity gps-entity-place="latitude: 22.94; longitude: 121.375;" 
                   geometry="primitive: box" 
                   material="color: blue" 
@@ -24,7 +24,8 @@
         const cameraWidth = deviceWidth < 1280 ? deviceWidth : 1280;
         const cameraHeight = deviceHeight < 720 ? deviceHeight : 720;
 
-        document.querySelector('a-scene').setAttribute('arjs', `sourceWidth: ${cameraWidth}; sourceHeight: ${cameraHeight}`);
+        // Apply dynamic resolution settings if needed (optional)
+        console.log(`Camera Resolution: ${cameraWidth}x${cameraHeight}`);
     </script>
 </body>
 </html>
