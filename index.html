@@ -8,7 +8,7 @@
     <script src="https://cdn.rawgit.com/jeromeetienne/ar.js/2.2.1/aframe/build/aframe-ar.min.js"></script>
 </head>
 <body style="margin: 0; overflow: hidden;">
-    <a-scene embedded arjs="sourceType: webcam; sourceWidth: 1280; sourceHeight: 720;">
+    <a-scene embedded arjs="sourceType: webcam; sourceWidth: 1920; sourceHeight: 1080;">
         <a-entity gps-entity-place="latitude: 22.94; longitude: 121.375;" 
                   geometry="primitive: box" 
                   material="color: blue" 
@@ -18,15 +18,6 @@
     </a-scene>
 
     <script>
-        // 动态获取设备分辨率并设置 AR.js 分辨率
-        const deviceWidth = window.innerWidth * window.devicePixelRatio;
-        const deviceHeight = window.innerHeight * window.devicePixelRatio;
-
-        const cameraWidth = deviceWidth < 1280 ? deviceWidth : 1280;
-        const cameraHeight = deviceHeight < 720 ? deviceHeight : 720;
-
-        document.querySelector('a-scene').setAttribute('arjs', `sourceWidth: ${cameraWidth}; sourceHeight: ${cameraHeight}`);
-
         // 检查设备分辨率与像素比
         console.log("设备像素比:", window.devicePixelRatio);
         console.log("实际像素尺寸:", window.innerWidth * window.devicePixelRatio, window.innerHeight * window.devicePixelRatio);
