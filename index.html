@@ -1,37 +1,15 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AR Static Location</title>
-    <!-- 引入 A-Frame 和 DRACO 解码器 -->
-    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
-</head>
-<body style="margin: 0; overflow: hidden;">
-    <a-scene 
-        embedded 
-        arjs="sourceType: gps; debugUIEnabled: false;">
-        <!-- 添加 GLTF 模型 -->
-        <a-entity 
-            gps-entity-place="latitude: 22.94; longitude: 121.375;"
-            gltf-model="./cube.glb"
-            scale="0.5 0.5 0.5"
-            rotation="0 180 0"
-            animation-mixer>
-        </a-entity>
-        <!-- GPS 相机 -->
-        <a-camera gps-camera rotation-reader></a-camera>
-    </a-scene>
-
-    <!-- 测试脚本：检查地理位置 -->
-    <script>
-        window.onload = function () {
-            // 测试地理位置
-            navigator.geolocation.getCurrentPosition(
-                (position) => console.log('位置已获取：', position),
-                (error) => console.error('无法获取地理位置：', error)
-            );
-        };
-    </script>
-</body>
-</html>
+<a-scene embedded arjs="sourceType: gps; debugUIEnabled: false;">
+    <a-entity 
+        gps-entity-place="latitude: 22.94; longitude: 121.375;"
+        gltf-model="./cube.glb"
+        scale="0.5 0.5 0.5"
+        rotation="0 180 0"
+        animation-mixer>
+    </a-entity>
+    <a-camera 
+        gps-camera 
+        rotation-reader 
+        look-controls 
+        wasd-controls="enabled: false">
+    </a-camera>
+</a-scene>
