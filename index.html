@@ -3,67 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- 引入 A-Frame 和 AR.js 库 -->
+    <title>AR Static Location</title>
+    <!-- 引入 A-Frame 和 DRACO 解码器 -->
     <script src="https://aframe.io/releases/1.6.0/aframe.min.js"></script>
-    <script src="https://cdn.rawgit.com/jeromeetienne/ar.js/1.7.2/aframe/build/aframe-ar.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.164.0/examples/js/loaders/DRACOLoader.js"></script>
 </head>
 <body style="margin: 0; overflow: hidden;">
-    <!-- A-Frame 场景 -->
     <a-scene 
         embedded 
         arjs="sourceType: gps; debugUIEnabled: false;">
-        <!-- AR.js 的 GPS 控制器，必须添加 -->
+        <!-- 添加 GLTF 模型 -->
+        <a-entity 
+            gps-entity-place="latitude: 22.94; longitude: 121.375;"
+            gltf-model="./assets/magnemite/scene.gltf"
+            draco-decoder-path="https://cdn.jsdelivr.net/npm/three@0.164.0/examples/js/libs/draco/"
+            scale="0.5 0.5 0.5"
+            rotation="0 180 0"
+            animation-mixer>
+        </a-entity>
+        <!-- GPS 相机 -->
         <a-camera gps-camera rotation-reader></a-camera>
     </a-scene>
-
-    <!-- JavaScript 部分 -->
-    <script>
-        // 在页面加载完成后执行
-        window.onload = () => {
-            // 调用静态加载地点的函数
-            let places = staticLoadPlaces();
-            // 渲染地点并添加到场景中
-            renderPlaces(places);
-        };
-
-        // 静态定义地点信息
-        function staticLoadPlaces() {
-            return [
-                {
-                    name: 'Magnemite',
-                    location: {
-                        lat: 22.94, // 替换为你的纬度
-                        lng: 121.375, // 替换为你的经度
-                    }
-                },
-            ];
-        }
-
-        // 渲染地点并生成 3D 模型
-        function renderPlaces(places) {
-            let scene = document.querySelector('a-scene'); // 获取 A-Frame 场景
-
-            places.forEach((place) => {
-                let latitude = place.location.lat; // 获取纬度
-                let longitude = place.location.lng; // 获取经度
-
-                // 创建一个 a-entity 来表示 3D 模型
-                let model = document.createElement('a-entity');
-                model.setAttribute('gps-entity-place', `latitude: ${latitude}; longitude: ${longitude};`);
-                model.setAttribute('gltf-model', 'pyro_for_prisma_3d/scene.gltf'); // 模型路径
-                model.setAttribute('rotation', '0 180 0');
-                model.setAttribute('animation-mixer', ''); // 动画混合器
-                model.setAttribute('scale', '0.5 0.5 0.5'); // 缩放比例
-
-                // 模型加载完成后触发事件
-                model.addEventListener('loaded', () => {
-                    window.dispatchEvent(new CustomEvent('gps-entity-place-loaded'));
-                });
-
-                // 将模型添加到场景中
-                scene.appendChild(model);
-            });
-        }
-    </script>
 </body>
 </html>
