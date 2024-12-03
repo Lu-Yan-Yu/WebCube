@@ -16,14 +16,5 @@
     </a-entity>
     <a-camera gps-camera rotation-reader camera></a-camera>
 </a-scene>
-    <script>
-        const deviceWidth = window.innerWidth * window.devicePixelRatio;
-        const deviceHeight = window.innerHeight * window.devicePixelRatio;
-
-        const cameraWidth = deviceWidth < 1280 ? deviceWidth : 1280;
-        const cameraHeight = deviceHeight < 720 ? deviceHeight : 720;
-
-        console.log(`Camera Resolution: ${cameraWidth}x${cameraHeight}`);
-    </script>
 </body>
 </html>
