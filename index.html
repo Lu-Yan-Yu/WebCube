@@ -1,136 +1,59 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <meta charset='utf-8'>
-    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
-    <title>AR.js A-Frame Scene</title>
-    <script src='https://aframe.io/releases/1.6.0/aframe.min.js'></script>
-    <script src="https://github.com/jeromeetienne/AR.js/blob/location-based/aframe/build/aframe-ar.min.js"></script>
-    <script src="https://raw.github.com/donmccurdy/aframe-extras/master/dist/aframe-extras.loaders.min.js"></script>
-    <script>
-        THREEx.ArToolkitContext.baseURL = 'https://raw.github.com/jeromeetienne/ar.js/master/three.js/'
-    </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- 引入 A-Frame 和 AR.js 库 -->
+    <script src="https://aframe.io/releases/1.6.0/aframe.min.js"></script>
+    <script src="https://cdn.rawgit.com/jeromeetienne/ar.js/1.7.2/aframe/build/aframe-ar.min.js"></script>
 </head>
-<script src="./script.js"></script>
-<body style='margin: 0; overflow: hidden;'>
+<body style="margin: 0; overflow: hidden;">
+    <!-- A-Frame 场景 -->
+    <a-scene 
+        embedded 
+        arjs="sourceType: gps; debugUIEnabled: false;">
+        <!-- AR.js 的 GPS 控制器，必需组件 -->
+        <a-camera gps-camera rotation-reader></a-camera>
+    </a-scene>
 
-    <!-- 跳转按钮 -->
-    <a href="https://forms.gle/q8jHTfVkKbXCjR9i7" target="_blank">
-        <button id="linkButton" style="position: absolute; z-index: 10; top: 10px; right: 10px; width:50px; height:50px;">前往投票</button>
-    </a>
-    <a-scene
-       vr-mode-ui="enabled: false"
-		embedded
-        arjs='sourceType:webcam ; debugUIEnabled: false;'>
-        <a-camera gps-camera rotation-reader>
-		</a-camera>
-	</a-scene>
-
-    <!-- 下拉菜单 -->
-    <select id="options" style="position: absolute; z-index: 10; top: 10px; left: 10px; width:100px;height:50px;">
-        <option value="">更換方案</option>
-        <option value="option1">方案一</option>
-        <option value="option2">方案二</option>
-        <option value="option3">方案三</option>
-        <option value="option4">方案四</option>
-    </select>
-
+    <!-- JavaScript 部分 -->
     <script>
-        /*// 获取实体和选项菜单元素
-        const shapeEntity = document.getElementById('shapeEntity');
-        const options = document.getElementById('options');
-
-        // 监听下拉菜单变化事件
-        options.addEventListener('change', function() {
-            const selectedValue = options.value;
-
-            switch (selectedValue) {
-                case 'option1':
-                    shapeEntity.setAttribute('geometry', 'primitive: box; height: 0.5; width: 0.5; depth: 0.5'); // 方块
-                    shapeEntity.setAttribute('material', 'color: rgb(70, 130, 180)'); // 蓝色
-                    break;
-                case 'option2':
-                    shapeEntity.setAttribute('geometry', 'primitive: box; height: 0.5; width: 0.5; depth: 0.5'); // 方块
-                    shapeEntity.setAttribute('material', 'color: rgb(205, 112, 84)'); // 红色
-                    break;
-                case 'option3':
-                    shapeEntity.setAttribute('geometry', 'primitive: sphere; radius: 0.4'); // 球体
-                    shapeEntity.setAttribute('material', 'color: rgb(70, 130, 180)'); // 蓝色
-                    break;
-                case 'option4':
-                    shapeEntity.setAttribute('geometry', 'primitive: sphere; radius: 0.4'); // 球体
-                    shapeEntity.setAttribute('material', 'color: rgb(205, 112, 84)'); // 红色
-                    break;
-                default:
-                    break;
-            }
-        });*/
-        
-       /* // 点击实体时显示颜色和大小信息
-        shapeEntity.addEventListener('raycaster-intersected', function () {
-    console.log("实体被点击");
-    const material = shapeEntity.getAttribute('material');
-    const geometry = shapeEntity.getAttribute('geometry');
-    let colorInfo = `颜色: ${material.color}`;
-    let sizeInfo = "";
-
-    if (geometry.primitive === "box") {
-        sizeInfo = `大小: 高度 ${geometry.height}, 宽度 ${geometry.width}, 深度 ${geometry.depth}`;
-    } else if (geometry.primitive === "sphere") {
-        sizeInfo = `大小: 半径 ${geometry.radius}`;
-    }
-
-    alert(`${colorInfo}\n${sizeInfo}`);
-}); */
-    // 在页面加载时执行
+        // 在页面加载完成后执行
         window.onload = () => {
-            // 调用 staticLoadPlaces() 加载位置数据
+            // 调用静态加载地点的函数
             let places = staticLoadPlaces();
-            // 渲染这些地点
+            // 渲染地点并添加到场景中
             renderPlaces(places);
         };
 
-        // 静态加载地点数据
+        // 静态定义地点信息
         function staticLoadPlaces() {
             return [
                 {
                     name: 'Magnemite',
                     location: {
-                        lat: 22.94, // 替换为你的纬度
-                        lng:121.375, // 替换为你的经度
+                        lat: 44.496470, // 替换为你的纬度
+                        lng: 11.320180, // 替换为你的经度
                     }
                 },
             ];
         }
 
-        // 渲染地点并在场景中添加 3D 模型
+        // 渲染地点并生成 3D 模型
         function renderPlaces(places) {
-            let scene = document.querySelector('a-scene'); // 选择场景
+            let scene = document.querySelector('a-scene'); // 获取 A-Frame 场景
 
             places.forEach((place) => {
-                let latitude = place.location.lat;
-                let longitude = place.location.lng;
+                let latitude = place.location.lat; // 获取纬度
+                let longitude = place.location.lng; // 获取经度
 
+                // 创建一个 a-entity 来表示 3D 模型
                 let model = document.createElement('a-entity');
-                // 设置位置
                 model.setAttribute('gps-entity-place', `latitude: ${latitude}; longitude: ${longitude};`);
-                // 设置模型文件路径
-                model.setAttribute('gltf-model', './pyro_for_prisma_3d/scene.gltf'); // 确保路径正确
+                model.setAttribute('gltf-model', './assets/magnemite/scene.gltf'); // 模型路径
                 model.setAttribute('rotation', '0 180 0');
-                model.setAttribute('animation-mixer', '');
-                model.setAttribute('scale', '0.5 0.5 0.5');
+                model.setAttribute('animation-mixer', ''); // 动画混合器
+                model.setAttribute('scale', '0.5 0.5 0.5'); // 缩放比例
 
-                // 加载完成后触发事件
-                model.addEventListener('loaded', () => {
-                    window.dispatchEvent(new CustomEvent('gps-entity-place-loaded'));
-                });
-
-                // 将模型添加到场景中
-                scene.appendChild(model);
-            });
-        }
-
-
-    </script>
-</body>
-</html>
+                // 模型加载完成后触发事件
+                model.addEventListener
