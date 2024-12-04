@@ -8,19 +8,69 @@
     <script src="https://cdn.rawgit.com/jeromeetienne/ar.js/2.2.1/aframe/build/aframe-ar.min.js"></script>
 </head>
 <body style="margin: 0; overflow: hidden;">
+    <!-- 跳转按钮 -->
+    <a href="https://forms.gle/q8jHTfVkKbXCjR9i7" target="_blank">
+        <button id="linkButton" style="position: absolute; z-index: 10; top: 10px; right: 10px; width:50px; height:50px;">前往投票</button>
+    </a>
+    <!-- 下拉式選單 -->
+    <div style="position: absolute;absolute; z-index: 10; top: 10px; left: 10px; width:100px;height:50px;">
+        <label for="scenario-select">選擇方案：</label>
+        <select id="scenario-select">
+            <option value="" selected>-- 請選擇方案 --</option>
+            <option value="scenario1">方案一</option>
+            <option value="scenario2">方案二</option>
+        </select>
+    </div>
+
     <a-scene embedded>
         <!-- Camera with GPS tracking -->
         <a-camera gps-camera rotation-reader camera="fov:90; near:0.1"></a-camera>
         
         <!-- Model positioned relative to the camera -->
+        /方案一
         <a-entity 
+            id="model-option1"
             gps-entity-place="latitude: 22.9984782; longitude: 120.2200409;"
             gltf-model="./elevator.glb"
             scale="1 1 1"
             rotation="0 180 0"
             position="0 0 0"
-            animation-mixer>
+            animation-mixer
+            visible="false">
+        </a-entity>
+        /方案二
+        <a-entity 
+            id="model-option2"
+            gps-entity-place="latitude: 22.998840; longitude: 120.2203118;"
+            gltf-model="./elevator.glb"
+            scale="1 1 1"
+            rotation="0 180 0"
+            position="0 0 0"
+            animation-mixer
+            visible="false">
         </a-entity>
     </a-scene>
+    <script>
+        // 取得下拉選單和模型元素
+        const selectElement = document.getElementById('scenario-select');
+        const modelOption1 = document.getElementById('model-option1');
+        const modelOption2 = document.getElementById('model-option2');
+
+        // 監聽下拉選單變化
+        selectElement.addEventListener('change', (event) => {
+            const selectedValue = event.target.value;
+
+            // 隱藏所有模型
+            modelOption1.setAttribute('visible', 'false');
+            modelOption2.setAttribute('visible', 'false');
+
+            // 顯示對應模型
+            if (selectedValue === 'scenario1') {
+                modelOption1.setAttribute('visible', 'true');
+            } else if (selectedValue === 'scenario2') {
+                modelOption2.setAttribute('visible', 'true');
+            }
+        });
+    </script>
 </body>
 </html>
