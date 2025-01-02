@@ -60,21 +60,18 @@
         </a-entity>
     </a-scene>
     <script>
-        // 使用 window.onload 确保页面完全加载
-        window.onload = () => {
-            const arScene = document.getElementById('ar-scene');
-            // 监听 A-Frame 场景加载完成事件
-            arScene.addEventListener('loaded', () => {
-                const firstVersionInfo = {
-                    name: "測量系館",
-                    info: "本系隸屬成大工學院，前身為土木工程研究所測量工程組，1976年成立「航空測量研究所」，1978年成立「測量工程系」，由史惠順教授擔任第一屆系主任兼研究所所長。",
-                    floor: "4"
-                };
-                
-                // 场景加载完后显示信息
-                alert(`模型名稱: ${firstVersionInfo.name}\n資訊: ${firstVersionInfo.info}\n樓層數: ${firstVersionInfo.floor}`);
-            });
-        };
+         // 在攝影機加載完後顯示信息
+        const cameraElement = document.getElementById('camera');
+        cameraElement.addEventListener('loaded', () => {
+            const firstVersionInfo = {
+                name: "測量系館",
+                info: "本系隸屬成大工學院，前身為土木工程研究所測量工程組，1976年成立「航空測量研究所」，1978年成立「測量工程系」，由史惠順教授擔任第一屆系主任兼研究所所長。",
+                floor: "4"
+            };
+            
+            // 摄影机加载完后显示信息
+            alert(`模型名稱: ${firstVersionInfo.name}\n資訊: ${firstVersionInfo.info}\n樓層數: ${firstVersionInfo.floor}`);
+        });
         // 取得下拉選單和模型元素
         const selectElement = document.getElementById('scenario-select');
         const modelOption1 = document.getElementById('model-option1');
