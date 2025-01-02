@@ -60,8 +60,8 @@
         </a-entity>
     </a-scene>
     <script>
-        // 等待 DOM 完全加载后再绑定事件
-        document.addEventListener('DOMContentLoaded', () => {
+        // 使用 window.onload 确保页面完全加载
+        window.onload = () => {
             const arScene = document.getElementById('ar-scene');
             // 监听 A-Frame 场景加载完成事件
             arScene.addEventListener('loaded', () => {
@@ -74,7 +74,7 @@
                 // 场景加载完后显示信息
                 alert(`模型名稱: ${firstVersionInfo.name}\n資訊: ${firstVersionInfo.info}\n樓層數: ${firstVersionInfo.floor}`);
             });
-        });
+        };
         // 取得下拉選單和模型元素
         const selectElement = document.getElementById('scenario-select');
         const modelOption1 = document.getElementById('model-option1');
