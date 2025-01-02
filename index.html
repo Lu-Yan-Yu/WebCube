@@ -23,7 +23,7 @@
 
     <a-scene embedded>
         <!-- Camera with GPS tracking -->
-        <a-camera gps-camera rotation-reader camera="fov:90; near:0.1"></a-camera>
+        <a-camera id="camera" gps-camera rotation-reader camera="fov:90; near:0.1"></a-camera>
 
         <!-- Model positioned relative to the camera -->
         <a-entity
@@ -47,8 +47,8 @@
             }
         };
 
-        // 页面加载完成后直接显示该模型信息
-        window.addEventListener('load', () => {
+        // 在摄像机加载后显示模型信息
+        document.getElementById('camera').addEventListener('loaded', () => {
             const info = modelInfo["model-first-version"]; // 获取指定模型的信息
             alert(`模型名稱: ${info.name}\n資訊: ${info.info}\n樓層數: ${info.floor}`);
         });
