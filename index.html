@@ -13,7 +13,7 @@
         <button id="linkButton" style="position: absolute; z-index: 10; top: 10px; right: 10px; width:50px; height:50px;">前往投票</button>
     </a>
     <!-- 下拉式選單 -->
-    <div style="position: absolute;absolute; z-index: 10; top: 10px; left: 10px; width:100px;height:100px;">
+    <div style="position: absolute; z-index: 10; top: 10px; left: 10px; width:100px;height:100px;">
         <select id="scenario-select">
             <option value="" selected>-- 請選擇方案 --</option>
             <option value="scenario1">方案一</option>
@@ -21,12 +21,11 @@
         </select>
     </div>
 
-    <a-scene embedded>
+    <a-scene embedded id="scene">
         <!-- Camera with GPS tracking -->
-        <a-camera gps-camera rotation-reader camera="fov:90; near:0.1"></a-camera>
+        <a-camera gps-camera rotation-reader camera="fov:90; near:0.1" id="camera"></a-camera>
         
         <!-- Model positioned relative to the camera -->
-        /方案一
         <a-entity 
             id="model-option1"
             gps-entity-place="latitude: 22.998610; longitude: 120.220040;"
@@ -37,7 +36,7 @@
             animation-mixer
             visible="false">
         </a-entity>
-        /方案二
+
         <a-entity 
             id="model-option2"
             gps-entity-place="latitude: 22.998657; longitude: 120.219895;"
@@ -48,19 +47,20 @@
             animation-mixer
             visible="false">
         </a-entity>
+
         <a-entity
             id="model-first-version"
-            position="0 0 -3"
-            //gps-entity-place="latitude: 22.998588; longitude: 120.219703;"
+            gps-entity-place="latitude: 22.998588; longitude: 120.219703;"
             gltf-model="./first_version.glb"
             scale="0.5 0.5 0.5"
             rotation="0 0 0"
             position="0 0 0"
-            visible="false">
+            visible="true">
         </a-entity>
     </a-scene>
+
     <script>
-         document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function() {
             const sceneElement = document.getElementById('scene');
 
             // 等待场景加载完成
@@ -76,6 +76,7 @@
                 alert(`模型名稱: ${firstVersionInfo.name}\n資訊: ${firstVersionInfo.info}\n樓層數: ${firstVersionInfo.floor}`);
             });
         });
+
         // 取得下拉選單和模型元素
         const selectElement = document.getElementById('scenario-select');
         const modelOption1 = document.getElementById('model-option1');
