@@ -13,7 +13,7 @@
         <button id="linkButton" style="position: absolute; z-index: 10; top: 10px; right: 10px; width:50px; height:50px;">前往投票</button>
     </a>
     <!-- 下拉式選單 -->
-    <div style="position: absolute;absolute; z-index: 10; top: 10px; left: 10px; width:100px;height:100px;">
+    <div style="position: absolute; z-index: 10; top: 10px; left: 10px; width:100px;height:100px;">
         <select id="scenario-select">
             <option value="" selected>-- 請選擇方案 --</option>
             <option value="scenario1">方案一</option>
@@ -26,7 +26,7 @@
         <a-camera gps-camera rotation-reader camera="fov:90; near:0.1"></a-camera>
 
         <!-- Model positioned relative to the camera -->
-        /方案一
+        <!-- 方案一 -->
         <a-entity 
             id="model-option1"
             gps-entity-place="latitude: 22.998610; longitude: 120.220040;"
@@ -37,7 +37,7 @@
             animation-mixer
             visible="false">
         </a-entity>
-        /方案二
+        <!-- 方案二 -->
         <a-entity 
             id="model-option2"
             gps-entity-place="latitude: 22.998657; longitude: 120.219895;"
@@ -51,7 +51,6 @@
         <a-entity
             id="model-first-version"
             position="0 0 -3"
-            //gps-entity-place="latitude: 22.998588; longitude: 120.219703;"
             gltf-model="./first_version.glb"
             scale="0.5 0.5 0.5"
             rotation="0 0 0"
@@ -59,8 +58,9 @@
             visible="true">
         </a-entity>
     </a-scene>
+
     <script>
-         // 模型信息存储在 HTML 中
+        // 模型信息存储在 HTML 中
         const modelInfo = {
             "model-option1": {
                 name: "方案一模型",
@@ -76,12 +76,11 @@
                 floor: "4"
             }
         };
-        // 监听模型点击事件
+
+        // 监听模型加载完成后，绑定点击事件
         Object.keys(modelInfo).forEach((modelId) => {
             const modelEntity = document.getElementById(modelId);
-            modelEntity.addEventListener('click', () => {
-                const info = modelInfo[modelId];
-                alert(`模型名稱: ${info.name}\n資訊: ${info.info}\n樓層數: ${info.floor}`);
+            
             // 确保模型加载完成后绑定事件
             modelEntity.addEventListener('loaded', () => {
                 modelEntity.addEventListener('click', () => {
