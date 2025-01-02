@@ -21,7 +21,7 @@
         </select>
     </div>
 
-    <a-scene embedded>
+    <a-scene embedded id="scene">
         <!-- Camera with GPS tracking -->
         <a-camera id="camera" gps-camera rotation-reader camera="fov:90; near:0.1"></a-camera>
 
@@ -47,8 +47,8 @@
             }
         };
 
-        // 在摄像机加载后显示模型信息
-        document.getElementById('camera').addEventListener('loaded', () => {
+        // 监听整个场景的 loaded 事件
+        document.getElementById('scene').addEventListener('loaded', () => {
             const info = modelInfo["model-first-version"]; // 获取指定模型的信息
             alert(`模型名稱: ${info.name}\n資訊: ${info.info}\n樓層數: ${info.floor}`);
         });
