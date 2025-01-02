@@ -76,15 +76,19 @@
                 floor: "4"
             }
         };
-
         // 监听模型点击事件
         Object.keys(modelInfo).forEach((modelId) => {
             const modelEntity = document.getElementById(modelId);
-            modelEntity.addEventListener('click', () => {
-                const info = modelInfo[modelId];
-                alert(`模型名稱: ${info.name}\n資訊: ${info.info}\n樓層數: ${info.floor}`);
+
+            // 确保模型加载完成后绑定事件
+            modelEntity.addEventListener('loaded', () => {
+                modelEntity.addEventListener('click', () => {
+                    const info = modelInfo[modelId];
+                    alert(`模型名稱: ${info.name}\n資訊: ${info.info}\n樓層數: ${info.floor}`);
+                });
             });
         });
+        
         // 取得下拉選單和模型元素
         const selectElement = document.getElementById('scenario-select');
         const modelOption1 = document.getElementById('model-option1');
