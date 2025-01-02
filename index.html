@@ -56,39 +56,25 @@
             scale="0.5 0.5 0.5"
             rotation="0 0 0"
             position="0 0 0"
-            visible="true">
+            visible="false">
         </a-entity>
     </a-scene>
     <script>
          // 模型信息存储在 HTML 中
         const modelInfo = {
-            "model-option1": {
-                name: "方案一模型",
-                info: "這是方案一的電梯模型。",
-            },
-            "model-option2": {
-                name: "方案二模型",
-                info: "這是方案二的電梯模型。",
-            },
             "model-first-version": {
                 name: "測量系館",
                 info: "本系隸屬成大工學院，前身為土木工程研究所測量工程組，1976年成立「航空測量研究所」，1978年成立「測量工程系」，由史惠順教授擔任第一屆系主任兼研究所所長。",
                 floor: "4"
             }
         };
-        // 监听模型点击事件
-        Object.keys(modelInfo).forEach((modelId) => {
-            const modelEntity = document.getElementById(modelId);
 
-            // 确保模型加载完成后绑定事件
-            modelEntity.addEventListener('loaded', () => {
-                modelEntity.addEventListener('click', () => {
-                    const info = modelInfo[modelId];
-                    alert(`模型名稱: ${info.name}\n資訊: ${info.info}\n樓層數: ${info.floor}`);
-                });
-            });
+        // 页面加载完成后显示信息
+        document.addEventListener('DOMContentLoaded', () => {
+            const firstVersionInfo = modelInfo["model-first-version"];
+            alert(`模型名稱: ${firstVersionInfo.name}\n資訊: ${firstVersionInfo.info}\n樓層數: ${firstVersionInfo.floor}`);
         });
-        
+
         // 取得下拉選單和模型元素
         const selectElement = document.getElementById('scenario-select');
         const modelOption1 = document.getElementById('model-option1');
