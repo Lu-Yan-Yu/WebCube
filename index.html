@@ -60,18 +60,15 @@
         </a-entity>
     </a-scene>
     <script>
-         // 模型信息存储在 HTML 中
-        const modelInfo = {
-            "model-first-version": {
+        // 监听 A-Frame 场景加载完成事件
+        document.getElementById('ar-scene').addEventListener('loaded', () => {
+            const firstVersionInfo = {
                 name: "測量系館",
                 info: "本系隸屬成大工學院，前身為土木工程研究所測量工程組，1976年成立「航空測量研究所」，1978年成立「測量工程系」，由史惠順教授擔任第一屆系主任兼研究所所長。",
                 floor: "4"
-            }
-        };
-
-        // 页面加载完成后显示信息
-        document.addEventListener('DOMContentLoaded', () => {
-            const firstVersionInfo = modelInfo["model-first-version"];
+            };
+            
+            // 显示信息
             alert(`模型名稱: ${firstVersionInfo.name}\n資訊: ${firstVersionInfo.info}\n樓層數: ${firstVersionInfo.floor}`);
         });
 
