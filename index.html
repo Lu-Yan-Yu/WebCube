@@ -13,7 +13,7 @@
         <button id="linkButton" style="position: absolute; z-index: 10; top: 10px; right: 10px; width:50px; height:50px;">前往投票</button>
     </a>
     <!-- 下拉式選單 -->
-    <div style="position: absolute; z-index: 10; top: 10px; left: 10px; width:100px;height:100px;">
+    <div style="position: absolute;absolute; z-index: 10; top: 10px; left: 10px; width:100px;height:100px;">
         <select id="scenario-select">
             <option value="" selected>-- 請選擇方案 --</option>
             <option value="scenario1">方案一</option>
@@ -21,11 +21,12 @@
         </select>
     </div>
 
-    <a-scene embedded id="scene">
+    <a-scene embedded>
         <!-- Camera with GPS tracking -->
-        <a-camera gps-camera rotation-reader camera="fov:90; near:0.1" id="camera"></a-camera>
-        
+        <a-camera gps-camera rotation-reader camera="fov:90; near:0.1"></a-camera>
+
         <!-- Model positioned relative to the camera -->
+        /方案一
         <a-entity 
             id="model-option1"
             gps-entity-place="latitude: 22.998610; longitude: 120.220040;"
@@ -36,7 +37,7 @@
             animation-mixer
             visible="false">
         </a-entity>
-
+        /方案二
         <a-entity 
             id="model-option2"
             gps-entity-place="latitude: 22.998657; longitude: 120.219895;"
@@ -47,10 +48,10 @@
             animation-mixer
             visible="false">
         </a-entity>
-
         <a-entity
             id="model-first-version"
-            gps-entity-place="latitude: 22.998588; longitude: 120.219703;"
+            position="0 0 -3"
+            //gps-entity-place="latitude: 22.998588; longitude: 120.219703;"
             gltf-model="./first_version.glb"
             scale="0.5 0.5 0.5"
             rotation="0 0 0"
@@ -58,15 +59,38 @@
             visible="true">
         </a-entity>
     </a-scene>
-
     <script>
-         Object.keys(modelInfo).forEach((modelId) => {
+         // 模型信息存储在 HTML 中
+        const modelInfo = {
+            "model-option1": {
+                name: "方案一模型",
+                info: "這是方案一的電梯模型。",
+            },
+            "model-option2": {
+                name: "方案二模型",
+                info: "這是方案二的電梯模型。",
+            },
+            "model-first-version": {
+                name: "測量系館",
+                info: "本系隸屬成大工學院，前身為土木工程研究所測量工程組，1976年成立「航空測量研究所」，1978年成立「測量工程系」，由史惠順教授擔任第一屆系主任兼研究所所長。",
+                floor: "4"
+            }
+        };
+        // 监听模型点击事件
+        Object.keys(modelInfo).forEach((modelId) => {
             const modelEntity = document.getElementById(modelId);
             modelEntity.addEventListener('click', () => {
                 const info = modelInfo[modelId];
                 alert(`模型名稱: ${info.name}\n資訊: ${info.info}\n樓層數: ${info.floor}`);
+            // 确保模型加载完成后绑定事件
+            modelEntity.addEventListener('loaded', () => {
+                modelEntity.addEventListener('click', () => {
+                    const info = modelInfo[modelId];
+                    alert(`模型名稱: ${info.name}\n資訊: ${info.info}\n樓層數: ${info.floor}`);
+                });
             });
         });
+        
         // 取得下拉選單和模型元素
         const selectElement = document.getElementById('scenario-select');
         const modelOption1 = document.getElementById('model-option1');
